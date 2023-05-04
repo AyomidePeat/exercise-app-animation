@@ -39,9 +39,9 @@ class _ChallengeListScreenState extends State<ChallengeListScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(isCardio ? size.height * 0.75 : 100),
+            preferredSize: Size.fromHeight(isCardio ? size.height * 0.71 : 100),
             child: AppBar(
-                backgroundColor: Color.fromARGB(255, 126, 126, 126),
+                backgroundColor: Colors.white,
                 flexibleSpace: Column(
                   children: [
                     Padding(
@@ -49,18 +49,19 @@ class _ChallengeListScreenState extends State<ChallengeListScreen> {
                           horizontal: 8.0, vertical: 5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            SmallButton(
+                          children:  [
+                            SmallButton(onPressed: ()=>Navigator.pop(context),
+                            
                               color: Colors.white,
                               child:
-                                  Icon(Icons.arrow_back, color: Colors.black),
+                              const    Icon(Icons.arrow_back, color: Colors.black),
                             ),
-                            Text(
+                           const Text(
                               'challenge',
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 207, 196, 196)),
+                                  color: Color.fromARGB(255, 166, 156, 156)),
                             ),
-                            SmallButton(
+                            SmallButton(onPressed: (){},
                               color: Colors.white,
                               child:
                                   Icon(Icons.more_horiz, color: Colors.black),
@@ -74,7 +75,7 @@ class _ChallengeListScreenState extends State<ChallengeListScreen> {
                             }),
                         child: isCardio
                             ? ChallengeListContainer(
-                                color: const Color.fromARGB(255, 126, 126, 126),
+                                color: isCardio ? Colors.white:const Color.fromARGB(255, 126, 126, 126),
                                 height: isCardio ? size.height * 0.63 : 70,
                                 isDragged: isCardio,
                                 child: const ChallengeContainer(
@@ -86,22 +87,24 @@ class _ChallengeListScreenState extends State<ChallengeListScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
-                                    Text('1 / ',
+                                children:  [
+                                    const Text('1 / ',
                                         style: TextStyle(
                                             color: Color.fromARGB(
                                                 255, 207, 196, 196),
                                             fontSize: 23)),
-                                    Text(
+                                    const Text(
                                       'cardio',
                                       style: TextStyle(fontSize: 23),
                                     ),
-                                    Expanded(child: SizedBox())
+                                    SizedBox(width:size.width*0.7)
                                   ]))
                   ],
                 ),
                 shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)))),
+                    borderRadius: BorderRadius.circular(40))).animate()
+              .then(duration: 2000.ms)
+              .slideY(duration: 2000.ms, curve:Curves.linear ),),
         body: ListView.builder(
             itemCount: challenges.length,
             itemBuilder: (context, index) {
@@ -117,41 +120,37 @@ class _ChallengeListScreenState extends State<ChallengeListScreen> {
                 
                   });
                 },
-                child: Align(
-                  heightFactor:  0.7,
-                  alignment: Alignment.topCenter,
-                  child: ChallengeListContainer(
-                    color: isDragged && currentIndex == index
-                        ? Color.fromARGB(255, 250, 236, 236)
-                        :  colors[index],
-                    height: isDragged && currentIndex == index
-                        ? size.height * 0.6
-                        : 70,
-                    isDragged: isDragged,
-                    child: isDragged && currentIndex == index
-                        ? ChallengeContainer(
-                            image: images[index],
-                            challenge: challenges[index],
-                            number: num.toString(),
+                child: ChallengeListContainer(
+                  color: isDragged && currentIndex == index
+                      ? Color.fromARGB(255, 250, 236, 236)
+                      :  colors[index],
+                  height: isDragged && currentIndex == index
+                      ? size.height * 0.6
+                      : 70,
+                  isDragged: isDragged,
+                  child: isDragged && currentIndex == index
+                      ? ChallengeContainer(
+                          image: images[index],
+                          challenge: challenges[index],
+                          number: num.toString(),
+                        )
+                      : Row(children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only( left: 2),
+                            child: Text('${num.toString()} / ',
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 89, 75, 75),
+                                    fontSize: 23)),
+                          ),
+                          Text(
+                            challenges[index],
+                            style: const TextStyle(fontSize: 23),
                           )
-                        : Row(children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only( left: 2),
-                              child: Text('${num.toString()} / ',
-                                  style: const TextStyle(
-                                      color: Color.fromARGB(255, 207, 196, 196),
-                                      fontSize: 23)),
-                            ),
-                            Text(
-                              challenges[index],
-                              style: const TextStyle(fontSize: 23),
-                            )
-                          ]),
-                  ),
-                ),
+                        ]),
+                ).animate().then(delay: 500.ms).slideY(begin: 3,duration:1000.ms, curve: Curves.easeInOutQuad)
               );
-            }),
+            })
       ),
     );
   }
