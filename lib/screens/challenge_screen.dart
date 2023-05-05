@@ -160,13 +160,13 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                   )
                                 ],
                               ),
-                              Text('dumbbell to the chest',
+                              Text('Burpee walkout',
                                   style: TextStyle(
                                       fontSize: size.width / 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
                               const Text(
-                                'Hold the dumbbell straight, put your arm behing your back, feel the tension on your back ',
+                                '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuny.',
                                 overflow: TextOverflow.fade,
                               )
                             ],
