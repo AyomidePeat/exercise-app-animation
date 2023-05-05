@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:exercise_app_animation/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:flutter_svg/svg.dart';
 
 import '../widgets/big_button.dart';
@@ -22,25 +23,31 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
   bool isDone = false;
   int secs = 30;
   int millisecs = 59;
-  late Timer timer;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    
+  }
 
   void startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 17), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 17), (timer) {
       setState(() {
-        if (millisecs <= 60 && millisecs != 0 && isPlayed !=false ) {
+        if (millisecs <= 60 && millisecs != 0 && isPlayed != false) {
           millisecs--;
         }
-        if (millisecs == 0 && secs <= 30 ) {
-          isDone = true; if (secs>=1) {
+        if (millisecs == 0 && secs <= 30) {
+          isDone = true;
+          if (secs >= 1) {
             secs = secs - 1;
           }
 
           millisecs = 59;
-          if (secs == 0 ) {
+          if (secs == 0) {
             timer.cancel();
-           millisecs = 0;
-          isPlayed = !isPlayed;
-            
+            millisecs = 0;
+            isPlayed = !isPlayed;
           }
         }
       });
@@ -55,24 +62,23 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     Timer(const Duration(milliseconds: 20), () {
       setState(() {
         showBorder = false;
-        
+       
       });
     });
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    timer?.cancel();
     super.dispose();
   }
 
   @override
-  
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SafeArea(top:true,
+    return SafeArea(
+      top: true,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -96,29 +102,37 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SmallButton(onPressed: ()=>Navigator.pop(context),
-                            color: Colors.white38, child: Icon(Icons.arrow_back)),
-                        SmallButton(onPressed: (){},
-                            color: Colors.white38, child: Icon(Icons.more_horiz))
+                        SmallButton(
+                            onPressed: () => Navigator.pop(context),
+                            color: Colors.white,
+                            child: const Icon(Icons.arrow_back,
+                                color: Colors.black)),
+                        SmallButton(
+                            onPressed: () {},
+                            color: Colors.white,
+                            child: const Icon(Icons.more_horiz,
+                                color: Colors.black))
                       ],
                     ),
                   ),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
                           // margin: EdgeInsets.only(top: 2.0, bottom: 2.0),
                           height: 150,
                           width: size.width,
                           decoration: BoxDecoration(
-                              color: Colors.white38,
+                              color: const Color.fromARGB(97, 104, 93, 93),
                               borderRadius: BorderRadius.circular(20)),
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   RichText(
                                     text: const TextSpan(
@@ -159,10 +173,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                           )))
                 ],
               ),
-            ).animate().slideY(begin:3, duration:400.ms),
+            ).animate().slideY(begin: 3, duration: 400.ms),
             Expanded(
               child: CustomContainer(
-                height:0,
+                height: 0,
                 color: Colors.white,
                 width: double.infinity,
                 child: Center(
@@ -177,18 +191,18 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                             style: TextStyle(
                                 color: isDone
                                     ? Colors.grey
-                                    : Color.fromARGB(255, 229, 208, 208),
+                                    : const Color.fromARGB(255, 229, 208, 208),
                                 fontWeight: FontWeight.w400,
                                 fontSize: 50)),
                         Text(millisecs < 10 ? '0$millisecs' : '$millisecs',
                             style: TextStyle(
                                 color: isDone
-                                    ? Color.fromARGB(255, 229, 208, 208)
+                                    ? const Color.fromARGB(255, 229, 208, 208)
                                     : Colors.grey,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 50))
                       ],
-                    ).animate().fadeIn(delay: 2700.ms,duration: 500.ms),
+                    ).animate().fadeIn(delay: 2200.ms, duration: 500.ms),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -204,15 +218,17 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                   color: Colors.transparent,
                                   shape: BoxShape.circle,
                                   border: showBorder
-                                      ? Border.all(width: 2, color: Colors.white)
+                                      ? Border.all(
+                                          width: 3, color: Colors.white)
                                       : null),
                               child: Center(
                                 child: IconButton(
-                                    icon: Icon(
-                                        isPlayed ? Icons.stop : Icons.play_arrow),
+                                    icon: Icon(isPlayed
+                                        ? Icons.stop
+                                        : Icons.play_arrow),
                                     onPressed: () {
                                       startPlaying();
-                                     startTimer();
+                                      startTimer();
                                     }),
                               ),
                             )),
@@ -221,11 +237,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                             onPressed: () {},
                             icon: SvgPicture.asset('icons/forward-step.svg')),
                       ],
-                    ).animate().fadeIn(delay: 2500.ms,duration: 1000.ms),
+                    ).animate().fadeIn(delay: 1500.ms, duration: 1000.ms),
                   ],
                 )),
               ),
-            ).animate().slideY(delay: 200.ms, begin:3, duration: 1000.ms),
+            ).animate().slideY(delay: 200.ms, begin: 3, duration: 1000.ms),
           ],
         ),
       ),
